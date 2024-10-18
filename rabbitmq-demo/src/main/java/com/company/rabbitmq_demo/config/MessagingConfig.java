@@ -1,6 +1,7 @@
 package com.company.rabbitmq_demo.config;
 
 import org.springframework.amqp.core.*;
+import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
@@ -11,9 +12,9 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class MessagingConfig {
 
-    private static final String  MAIL_QUEUE = "email_notifications_queue";
-    private static final String MAIL_EXCHANGE = "email_exchange";
-    private static final String MAIL_OUTING_KEY = "email_routingKey";
+    public static final String  MAIL_QUEUE = "email_notifications_queue";
+    public static final String MAIL_EXCHANGE = "email_exchange";
+    public static final String MAIL_ROUTING_KEY = "email_routingKey";
 
     @Bean
     public Queue queue(){
@@ -25,7 +26,16 @@ public class MessagingConfig {
     }
     @Bean
     public Binding binding(Queue queue, TopicExchange exchange){
-        return BindingBuilder.bind(queue).to(exchange).with(MAIL_OUTING_KEY);
+        return BindingBuilder.bind(queue).to(exchange).with(MAIL_ROUTING_KEY);
+    }
+    @Bean
+    public ConnectionFactory connectionFactory(){
+        CachingConnectionFactory connectionFactory = new CachingConnectionFactory();
+        connectionFactory.setHost("localhost");
+        connectionFactory.setPort(5672);
+        connectionFactory.setUsername("guest");
+        connectionFactory.setPassword("guest");
+        return connectionFactory;
     }
 
     @Bean

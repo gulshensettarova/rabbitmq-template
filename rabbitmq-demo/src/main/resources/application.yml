@@ -1,0 +1,26 @@
+spring:
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: # hansi mailden mesaj gonderilecek
+    password: # Application password elave edilmelidir ve ya yuxardaki mailin password-u
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
+  rabbitmq:
+    host: localhost # RabbitMQ serverin hostu
+    port: 5672 # RabbitMQ üçün default port
+    username: guest # RabbitMQ istifadəçi adı
+    password: guest # RabbitMQ şifrə
+    virtual-host: / # Default virtual host
+    listener:
+      simple:
+        concurrency: 5 # Bir neçə listener
+        max-concurrency: 10 # Maksimum listener
+        prefetch: 1 # Mesajlar üçün prefetch sayı
+    template:
+      reply-timeout: 5000 # Cavab vaxtı limiti (millisaniyə)
